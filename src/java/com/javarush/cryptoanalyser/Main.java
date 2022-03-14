@@ -27,25 +27,28 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         int number = scanner.nextInt();
-        int key = scanner.nextInt();
-        String file1 = scanner.nextLine();
-        String file2 = scanner.nextLine();
         if (number == 1) {
             System.out.println(STR);
         }
 
+        Scanner scanner1 = new Scanner(System.in);
+        String file1 = scanner1.nextLine();
         try (FileReader in = new FileReader(file1);
-             BufferedReader reader = new BufferedReader(in)){
+             BufferedReader reader = new BufferedReader(in)) {
             while (reader.ready()) {
                 String line = reader.readLine();
             }
             System.out.println(KEY);
         }
+        Scanner scanner2 = new Scanner(System.in);
+        int key = scanner2.nextInt();
         System.out.println(WEY);
 
+        Scanner scanner3 = new Scanner(System.in);
+        String file2 = scanner3.nextLine();
         try (FileReader in = new FileReader(file2);
-             BufferedReader reader = new BufferedReader(in)){
-            while(reader.ready()){
+             BufferedReader reader = new BufferedReader(in)) {
+            while (reader.ready()) {
                 String line1 = reader.readLine();
             }
         }
@@ -69,5 +72,6 @@ public class Main {
         System.out.println(DONE);
     }
 }
+
 
 
