@@ -2,11 +2,13 @@ package com.javarush.cryptoanalyser;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import static java.lang.System.in;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
 
         System.out.println("Выберите действие и введите его номер");
@@ -19,14 +21,6 @@ public class Main {
 
         String STR = "Введите полный путь к файлу, содержимое которого хотите зашифровать";
         String KEY = "Введите ключ шифрования";
-        String WEY = "Введите полный путь к файлу, в который хочешь записать зашифрованный текст";
-        String DONE = "Файл зашифрован";
-        String SECRET = "Введи полный путь к файлу, содержимое которого хочешь расшифровать";
-
-        String rusAlphabet = "абвгдеёжзиклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-        String symbol = "\",.!?:;-\\/ ";
-        String digits = "0123456789";
-        String cryptoAlphabet = rusAlphabet + symbol + digits;
 
         Scanner scanner = new Scanner(in);
         int number = scanner.nextInt();
@@ -43,62 +37,79 @@ public class Main {
                 String line1 = reader.readLine();
             }
         }
-            System.out.println(KEY);
+        System.out.println(KEY);
 
-            Scanner scanner2 = new Scanner(in);
-            int key = scanner2.nextInt();
+        Scanner scanner2 = new Scanner(in);
+        int key = scanner2.nextInt();
 
-            public static void encrypt(char[], String line1){
-            char[] chars = cryptoAlphabet.toCharArray();
-            String text = line1;
-            char[] textChars = text.toCharArray();
-            char[] result = new char[textChars.length];
+       // encrypt();
+    }
 
-            int keyA = key;
-            int keyB = chars.length - keyA;
-            for (int i = 0; i < textChars.length; i++) {
-                char textChar = textChars[i];
-                for (int j = 0; j < chars.length; j++) {
-                    char ch = chars[j];
-                    if (textChar == ch) {
-                        result[i] = chars[(j + keyB) % chars.length];
-                    }
+    private static void encrypt(int key, String line1) {
+
+        String rusAlphabet = "абвгдеёжзиклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+        String symbol = "\",.!?:;-\\/ ";
+        String digits = "0123456789";
+        String cryptoAlphabet = rusAlphabet + symbol + digits;
+
+        char[] chars = cryptoAlphabet.toCharArray();
+        String text = line1;
+        char[] textChars = text.toCharArray();
+        char[] result = new char[textChars.length];
+
+        int keyA = key;
+        int keyB = chars.length - keyA;
+        for (int i = 0; i < textChars.length; i++) {
+            char textChar = textChars[i];
+            for (int j = 0; j < chars.length; j++) {
+                char ch = chars[j];
+                if (textChar == ch) {
+                    result[i] = chars[(j + keyB) % chars.length];
                 }
             }
         }
-            System.out.println(WEY);
+        inFile();
+    }
 
-            Scanner scanner3 = new Scanner(in);
-            String file2 = scanner3.nextLine();
-            try (BufferedWriter buff = new BufferedWriter(new FileWriter(file2))) {
-                buff.write(file1);
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+    public static void inFile() {
+        String WEY = "Введите полный путь к файлу, в который хочешь записать зашифрованный текст";
+        String DONE = "Файл зашифрован";
+        String SECRET = "Введи полный путь к файлу, содержимое которого хочешь расшифровать";
+        System.out.println(WEY);
+
+        Scanner scanner3 = new Scanner(in);
+        String file2 = scanner3.nextLine();
+        try (BufferedWriter buff = new BufferedWriter(new FileWriter(file2))) {
+     //       buff.write(file1);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println(DONE);
+
+        Scanner scanner = new Scanner(in);
+        int number = scanner.nextInt();
+        if (number == 2) {
+            System.out.println(SECRET);
+        }
+       // bruteForce();
+    }
+        public static int bruteForce (String file2, String cryptoAlphabet){
+            int lengthOfFile2 = file2.length();
+            int lengthOfCryptoAlphabet = cryptoAlphabet.length();
+
+            for (int i = 0; i < lengthOfFile2 - lengthOfCryptoAlphabet; i++) {
+
+                int j;
+                for (j = 0; j < lengthOfCryptoAlphabet; j++) {
+                    if (file2.charAt(i + j) != cryptoAlphabet.charAt(j)) {
+                        break;
+                    }
+                }
+                if (j == lengthOfCryptoAlphabet) {
+                    return i;
+                }
             }
-            System.out.println(DONE);
-
-            if (number == 2) {
-                System.out.println(SECRET);
-            }
-
-            //cлeдующая часть кода расшифровывает текст методом brute force
-//        public static int bruteForce (String file2, String cryptoAlphabet){
-//            int lengthOfFile2 = file2.length();
-//            int lengthOfCryptoAlphabet = cryptoAlphabet.length();
-//
-//            for (int i = 0; i < lengthOfFile2 - lengthOfCryptoAlphabet; i++) {
-//
-//                int j;
-//                for (j = 0; j < lengthOfCryptoAlphabet; j++) {
-//                    if (file2.charAt(i + j) != cryptoAlphabet.charAt(j)) {
-//                        break;
-//                    }
-//                }
-//                if (j == lengthOfCryptoAlphabet) {
-//                    return i;
-//                }
-//            }
-//            return lengthOfFile2;
+            return lengthOfFile2;
         }
     }
 
